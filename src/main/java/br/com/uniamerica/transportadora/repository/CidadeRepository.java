@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CidadeRepository extends JpaRepository<Cidade, Long> {
 
-    @Query("from Estado where ativo = :ativo")
+    @Query("from Cidade where ativo = :ativo")
     public List<Cidade> findByAtivo(@Param("ativo") final boolean ativo);
 
 

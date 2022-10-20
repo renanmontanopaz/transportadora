@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface FreteRepository extends JpaRepository<Frete, Long> {
 
-    @Query("from Estado where ativo = :ativo")
+    @Query("from Frete where ativo = :ativo")
     public List<Frete> findByAtivo(@Param("ativo") final boolean ativo);
 }
