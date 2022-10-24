@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 
 @Entity
-@Table(name= "tb_marca", schema = "public")
+@Table(name= "tb_marca", schema = "transportadora")
 public class Marca extends AbstractEntity {
 
     @Getter

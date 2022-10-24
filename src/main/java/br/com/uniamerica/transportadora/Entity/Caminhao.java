@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_caminhoes", schema = "public")
+@Table(name = "tb_caminhoes", schema = "transportadora")
 public class Caminhao extends AbstractEntity {
 
     @Getter

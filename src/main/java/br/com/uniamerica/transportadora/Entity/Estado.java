@@ -5,10 +5,11 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_estado", schema = "public")
+@Table(name = "tb_estado", schema = "transportadora")
 public class Estado extends AbstractEntity {
 
     @Getter

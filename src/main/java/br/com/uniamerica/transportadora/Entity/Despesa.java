@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name="tb_despesa", schema = "transportadora")
 public class Despesa extends AbstractEntity {
 
     @ManyToOne

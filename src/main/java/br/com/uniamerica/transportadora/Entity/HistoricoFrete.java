@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_HistoricoFrete", schema = "public")
+@Table(name = "tb_HistoricoFrete", schema = "transportadora")
 public class HistoricoFrete extends AbstractEntity {
 
     @Getter

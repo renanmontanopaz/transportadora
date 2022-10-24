@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tb_fretes", schema = "public")
+@Table(name = "tb_fretes", schema = "transportadora")
 public class Frete extends AbstractEntity {
 
     @ManyToOne(fetch= FetchType.EAGER, optional = false)
