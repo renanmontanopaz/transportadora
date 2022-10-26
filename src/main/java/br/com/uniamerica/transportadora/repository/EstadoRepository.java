@@ -14,6 +14,4 @@ public interface EstadoRepository extends JpaRepository<Estado, Long> {
     @Query("from Estado where ativo = :ativo")
     public List<Estado> findByAtivo(@Param("ativo") final boolean ativo);
 
-    public List<Estado> findByNome(@Param("nome") final String nome);
-
 }

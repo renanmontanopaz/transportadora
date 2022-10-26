@@ -6,11 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tb_cidade", schema="transportadora", uniqueConstraints={
-        @UniqueConstraint(
-                columnNames={"nome", "id_estado"}
-        )
-})
+@Table(name="tb_cidade", schema = "transportadora")
 public class Cidade extends AbstractEntity{
 
     @Getter
