@@ -32,8 +32,9 @@ public class CidadeController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Cidade nome){
+    public ResponseEntity<?> cadastrar(@RequestBody final Cidade nome, Cidade estado){
         this.cidadeRepository.save(nome);
+        this.cidadeRepository.save(estado);
         return ResponseEntity.ok().body("Registro cadastrado com sucesso");
     }
 

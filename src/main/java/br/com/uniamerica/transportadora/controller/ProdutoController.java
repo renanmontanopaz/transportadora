@@ -1,6 +1,4 @@
 package br.com.uniamerica.transportadora.controller;
-
-import br.com.uniamerica.transportadora.Entity.Modelo;
 import br.com.uniamerica.transportadora.Entity.Produto;
 import br.com.uniamerica.transportadora.repository.ProdutoRepository;
 import br.com.uniamerica.transportadora.service.ProdutoService;
