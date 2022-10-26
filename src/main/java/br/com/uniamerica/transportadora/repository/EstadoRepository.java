@@ -1,5 +1,5 @@
 package br.com.uniamerica.transportadora.repository;
-
+import br.com.uniamerica.transportadora.Entity.Cidade;
 import br.com.uniamerica.transportadora.Entity.Estado;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +11,10 @@ import java.util.List;
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
-    @Query("from Estado where ativo = :ativo")
-    public List<Estado> findByAtivo(@Param("ativo") final boolean ativo);
+    public List<Estado> findByAtivoTrue();
+    @Query(value = "select * from transportadora.tb_estado" + "where nome ilike '%' || :nome || '%' ", nativeQuery = true)
+    public List<Estado> findByLikeNomeAndAtivoTrue(@Param("nome") final String nome);
+
+    public List<Estado> findByEstado(final String estado);
 
 }

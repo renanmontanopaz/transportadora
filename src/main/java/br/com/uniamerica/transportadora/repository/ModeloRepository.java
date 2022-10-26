@@ -1,6 +1,6 @@
 package br.com.uniamerica.transportadora.repository;
-
-import br.com.uniamerica.transportadora.Entity.Cidade;
+import br.com.uniamerica.transportadora.Entity.Caminhao;
+import br.com.uniamerica.transportadora.Entity.Marca;
 import br.com.uniamerica.transportadora.Entity.Modelo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface ModeloRepository extends JpaRepository<Modelo, Long> {
 
-    @Query("from Modelo where ativo = :ativo")
-    public List<Modelo> findByAtivo(@Param("ativo") final boolean ativo);
+    public List<Modelo> findByAtivoTrue();
+    @Query(value = "select * from transportadora.tb_modelo " + "where nome ilike '%' || :nome || '%'", nativeQuery = true)
+    public List<Modelo> findByLikeNomeAndAtivoTrue(@Param("nome") final String nome);
+    public List<Modelo> findByNome(final String nome);
+    public List<Modelo> findByMarca(final Marca marca);
 }
