@@ -1,7 +1,11 @@
 package br.com.uniamerica.transportadora.service;
 import br.com.uniamerica.transportadora.Entity.Despesa;
+import br.com.uniamerica.transportadora.Entity.Usuario;
 import br.com.uniamerica.transportadora.repository.DespesaRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class DespesaService {
 
@@ -22,4 +26,5 @@ public class DespesaService {
             throw new RuntimeException("Id não encontrado");
         }
     }
+
 }

@@ -30,7 +30,6 @@ public class ModeloController {
     ){
         return ResponseEntity.ok().body(this.modeloRepository.findByLikeNomeAndAtivoTrue(nome));
     }
-
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody final Modelo nome, Modelo marca){
         this.modeloRepository.save(nome);

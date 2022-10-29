@@ -1,5 +1,4 @@
 package br.com.uniamerica.transportadora.repository;
-
 import br.com.uniamerica.transportadora.Entity.Caminhao;
 import br.com.uniamerica.transportadora.Entity.Cor;
 import br.com.uniamerica.transportadora.Entity.Modelo;

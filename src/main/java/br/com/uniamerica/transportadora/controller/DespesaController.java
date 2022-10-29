@@ -1,5 +1,6 @@
 package br.com.uniamerica.transportadora.controller;
 import br.com.uniamerica.transportadora.Entity.Despesa;
+import br.com.uniamerica.transportadora.Entity.Usuario;
 import br.com.uniamerica.transportadora.repository.DespesaRepository;
 import br.com.uniamerica.transportadora.service.DespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,12 @@ public class DespesaController {
             @RequestParam("motorista") final String motorista
     ){
         return ResponseEntity.ok().body(this.despesaRepository.findByLikeMotoristaAndAtivoTrue(motorista));
+    }
+    @GetMapping("/aprovadorIsNul")
+    public ResponseEntity<List<Despesa>> findAll(
+            @RequestParam("aprovador") final Usuario aprovador
+    ){
+        return ResponseEntity.ok().body(this.despesaRepository.findByAprovadorIsNull(aprovador));
     }
 
     @PostMapping

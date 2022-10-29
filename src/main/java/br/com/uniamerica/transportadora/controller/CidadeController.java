@@ -1,6 +1,7 @@
 package br.com.uniamerica.transportadora.controller;
 
 import br.com.uniamerica.transportadora.Entity.Cidade;
+import br.com.uniamerica.transportadora.Entity.Estado;
 import br.com.uniamerica.transportadora.repository.CidadeRepository;
 import br.com.uniamerica.transportadora.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class CidadeController {
         return ResponseEntity.ok().body(this.cidadeRepository.findByLikeNomeAndAtivoTrue(nome));
     }
 
+    @GetMapping("/filtro")
+    public ResponseEntity<List<Cidade>> findAll(
+            @RequestParam("estado") final Estado estado
+    ){
+        return ResponseEntity.ok().body(this.cidadeRepository.findByEstado(estado));
+    }
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody final Cidade nome, Cidade estado){
         this.cidadeRepository.save(nome);
