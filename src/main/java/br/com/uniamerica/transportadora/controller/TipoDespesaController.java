@@ -1,6 +1,6 @@
 package br.com.uniamerica.transportadora.controller;
+
 import br.com.uniamerica.transportadora.Entity.TipoDespesa;
-import br.com.uniamerica.transportadora.repository.TipoDespesaRepository;
 import br.com.uniamerica.transportadora.service.TipoDespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,57 +10,62 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping("/api/tipo-despesa")
 public class TipoDespesaController {
 
     @Autowired
-    private TipoDespesaRepository tipoDespesaRepository;
-    @Autowired
     private TipoDespesaService tipoDespesaService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(this.tipoDespesaRepository.findByAtivoTrue());
-    }
-
-    @GetMapping("/filtro")
-    public ResponseEntity<List<TipoDespesa>> findAll(
-            @RequestParam("nome") final String nome
-    ){
-        return ResponseEntity.ok().body(this.tipoDespesaRepository.findByLikeNomeAndAtivoTrue(nome));
-    }
-
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final TipoDespesa nome){
-        this.tipoDespesaRepository.save(nome);
-        return ResponseEntity.ok().body("Registro cadastrado com sucesso");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
-            @PathVariable final Long id,
-            @RequestBody final TipoDespesa nome
+    public ResponseEntity<?> save(
+            @RequestBody TipoDespesa tipoDespesa
     ){
         try{
-            this.tipoDespesaService.atualizar(id, nome);
-        }
-        catch (Exception e){
+            this.tipoDespesaService.save(tipoDespesa);
+            return ResponseEntity.ok().body("Tipo da despesa cadastrado!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro atualizado com sucesso...");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(
-            @PathVariable final Long id,
-            @RequestBody final TipoDespesa nome
+    @GetMapping
+    public ResponseEntity<List<TipoDespesa>> listAll(
+
+    ){
+        return ResponseEntity.ok().body(this.tipoDespesaService.listAll());
+    }
+
+    @GetMapping("/{idTipoDespesa}")
+    public ResponseEntity<TipoDespesa> findById(
+            @PathVariable("idTipoDespesa") Long idTipoDespesa
+    ){
+        return ResponseEntity.ok().body(this.tipoDespesaService.findById(idTipoDespesa));
+    }
+
+    @PutMapping("/{idTipoDespesa}")
+    public ResponseEntity<?> update(
+            @PathVariable Long idTipoDespesa,
+            @RequestBody TipoDespesa tipoDespesa
     ){
         try{
-            this.tipoDespesaService.excluir(id, nome);
-        }
-        catch (Exception e){
+            this.tipoDespesaService.update(idTipoDespesa, tipoDespesa);
+            return ResponseEntity.ok().body("Tipo da despesa atualizado com sucesso!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro excluído com sucesso...");
     }
+
+    @PutMapping("/ativo/{idTipoDespesa}")
+    public ResponseEntity<?> disable(
+            @PathVariable Long idTipoDespesa,
+            @RequestBody TipoDespesa tipoDespesa
+    ){
+        try{
+            this.tipoDespesaService.disable(idTipoDespesa, tipoDespesa);
+            return ResponseEntity.ok().body("Tipo da despesa desativada com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

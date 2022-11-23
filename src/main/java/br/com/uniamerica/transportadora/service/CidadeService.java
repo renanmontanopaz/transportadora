@@ -1,8 +1,14 @@
 package br.com.uniamerica.transportadora.service;
+
+import br.com.uniamerica.transportadora.Entity.Caminhao;
 import br.com.uniamerica.transportadora.Entity.Cidade;
+import br.com.uniamerica.transportadora.Entity.HistoricoFrete;
 import br.com.uniamerica.transportadora.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class CidadeService {
@@ -10,19 +16,40 @@ public class CidadeService {
     @Autowired
     private CidadeRepository cidadeRepository;
 
-    public void atualizar(final Long id, final Cidade nome){
-        if(id.equals(nome.getId()) && !this.cidadeRepository.findById(id).isEmpty()){
-            this.cidadeRepository.save(nome);
-        } else{
-            throw new RuntimeException("Id não encontrado");
+    @Transactional
+    public Cidade save(Cidade cidade) {
+        return this.cidadeRepository.save(cidade);
+    }
+
+    public List<Cidade> listAll() {
+        return this.cidadeRepository.findAll();
+    }
+
+    public Cidade findById(Long id) {
+        return this.cidadeRepository.findById(id).orElse(new Cidade());
+    }
+
+    @Transactional
+    public void update(Long id, Cidade cidade) {
+        if(id == cidade.getId()) {
+            this.cidadeRepository.save(cidade);
+        } else {
+            throw new RuntimeException();
         }
     }
 
-    public void excluir(final Long id, final Cidade nome){
-        if (id.equals(nome.getId()) && !this.cidadeRepository.findById(id).isEmpty()){
-            this.cidadeRepository.delete(nome);
-        } else{
-            throw new RuntimeException("Id não encontrado");
+    @Transactional
+    public void disable(Long id, Cidade cidade){
+        if (id == cidade.getId()) {
+            this.cidadeRepository.disable(cidade.getId());
+        }
+        else {
+            throw new RuntimeException();
         }
     }
+
+    public List<Cidade> findByEstado(Long id) {
+        return this.cidadeRepository.findByEstado(id);
+    }
+
 }

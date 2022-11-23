@@ -4,25 +4,45 @@ import br.com.uniamerica.transportadora.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public void atualizar(final Long id, final Usuario nome){
-        if(id.equals(nome.getId()) && !this.usuarioRepository.findById(id).isEmpty()){
-            this.usuarioRepository.save(nome);
-        } else{
-            throw new RuntimeException("Id não encontrado");
+    @Transactional
+    public Usuario save(Usuario usuario) {
+        return this.usuarioRepository.save(usuario);
+    }
+
+    public List<Usuario> listAll() {
+        return this.usuarioRepository.findAll();
+    }
+
+    public Usuario findById(Long id) {
+        return this.usuarioRepository.findById(id).orElse(new Usuario());
+    }
+
+    @Transactional
+    public void update(Long id, Usuario usuario) {
+        if(id == usuario.getId()) {
+            this.usuarioRepository.save(usuario);
+        } else {
+            throw new RuntimeException();
         }
     }
 
-    public void excluir(final Long id, final Usuario nome){
-        if (id.equals(nome.getId()) && !this.usuarioRepository.findById(id).isEmpty()){
-            this.usuarioRepository.delete(nome);
-        } else{
-            throw new RuntimeException("Id não encontrado");
+    @Transactional
+    public void disable(Long id, Usuario usuario){
+        if (id == usuario.getId()) {
+            this.usuarioRepository.disable(usuario.getId());
+        }
+        else {
+            throw new RuntimeException();
         }
     }
+
 }

@@ -1,6 +1,6 @@
 package br.com.uniamerica.transportadora.controller;
+
 import br.com.uniamerica.transportadora.Entity.Produto;
-import br.com.uniamerica.transportadora.repository.ProdutoRepository;
 import br.com.uniamerica.transportadora.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,58 +10,62 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping("/api/produto")
 public class ProdutoController {
-
-    @Autowired
-    private ProdutoRepository produtoRepository;
 
     @Autowired
     private ProdutoService produtoService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(this.produtoRepository.findByAtivoTrue());
-    }
-
-    @GetMapping("/filtro")
-    public ResponseEntity<List<Produto>> findAll(
-            @RequestParam("nome") final String nome
-    ){
-        return ResponseEntity.ok().body(this.produtoRepository.findByLikeNomeAndAtivoTrue(nome));
-    }
-
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Produto nome){
-        this.produtoRepository.save(nome);
-        return ResponseEntity.ok().body("Registro cadastrado com sucesso");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
-            @PathVariable final Long id,
-            @RequestBody final Produto nome
+    public ResponseEntity<?> save(
+            @RequestBody Produto produto
     ){
         try{
-            this.produtoService.atualizar(id, nome);
-        }
-        catch (Exception e){
+            this.produtoService.save(produto);
+            return ResponseEntity.ok().body("Produto cadastrado!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro atualizado com sucesso...");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(
-            @PathVariable final Long id,
-            @RequestBody final Produto nome
+    @GetMapping
+    public ResponseEntity<List<Produto>> listAll(
+
+    ){
+        return ResponseEntity.ok().body(this.produtoService.listAll());
+    }
+
+    @GetMapping("/{idProduto}")
+    public ResponseEntity<Produto> findById(
+            @PathVariable("idProduto") Long idProduto
+    ){
+        return ResponseEntity.ok().body(this.produtoService.findById(idProduto));
+    }
+
+    @PutMapping("/{idProduto}")
+    public ResponseEntity<?> update(
+            @PathVariable Long idProduto,
+            @RequestBody Produto produto
     ){
         try{
-            this.produtoService.excluir(id, nome);
-        }
-        catch (Exception e){
+            this.produtoService.update(idProduto, produto);
+            return ResponseEntity.ok().body("Produto atualizado com sucesso!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro excluído com sucesso...");
     }
+
+    @PutMapping("/ativo/{idProduto}")
+    public ResponseEntity<?> disable(
+            @PathVariable Long idProduto,
+            @RequestBody Produto produto
+    ){
+        try{
+            this.produtoService.disable(idProduto, produto);
+            return ResponseEntity.ok().body("Produto desativado com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

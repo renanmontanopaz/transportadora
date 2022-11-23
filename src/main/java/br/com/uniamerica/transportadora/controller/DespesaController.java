@@ -1,6 +1,6 @@
 package br.com.uniamerica.transportadora.controller;
+
 import br.com.uniamerica.transportadora.Entity.Despesa;
-import br.com.uniamerica.transportadora.Entity.Usuario;
 import br.com.uniamerica.transportadora.repository.DespesaRepository;
 import br.com.uniamerica.transportadora.service.DespesaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,69 +11,67 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping("/api/despesa")
 public class DespesaController {
-
-    @Autowired
-    private DespesaRepository despesaRepository;
 
     @Autowired
     private DespesaService despesaService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(this.despesaRepository.findByAtivoTrue());
-    }
-
-    @GetMapping("/filtro")
-    public ResponseEntity<List<Despesa>> findAll(
-            @RequestParam("motorista") final String motorista
-    ){
-        return ResponseEntity.ok().body(this.despesaRepository.findByLikeMotoristaAndAtivoTrue(motorista));
-    }
-    @GetMapping("/aprovadorIsNul")
-    public ResponseEntity<List<Despesa>> findAll(
-            @RequestParam("aprovador") final Usuario aprovador
-    ){
-        return ResponseEntity.ok().body(this.despesaRepository.findByAprovadorIsNull(aprovador));
-    }
-
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Despesa tipoDespesa,Despesa aprovador,Despesa motorista, Despesa data, Despesa valor, Despesa frete){
-        this.despesaRepository.save(tipoDespesa);
-        this.despesaRepository.save(aprovador);
-        this.despesaRepository.save(motorista);
-        this.despesaRepository.save(data);
-        this.despesaRepository.save(valor);
-        this.despesaRepository.save(frete);
-        return ResponseEntity.ok().body("Registro cadastrado com sucesso");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
-            @PathVariable final Long id,
-            @RequestBody final Despesa despesa
+    public ResponseEntity<?> save(
+            @RequestBody Despesa despesa
     ){
         try{
-            this.despesaService.atualizar(id, despesa);
-        }
-        catch (Exception e){
+            this.despesaService.save(despesa);
+            return ResponseEntity.ok().body("Despesa cadastrada!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro atualizado com sucesso...");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(
-            @PathVariable final Long id,
-            @RequestBody final Despesa despesa
+    @GetMapping
+    public ResponseEntity<List<Despesa>> listAll(
+
+    ){
+        return ResponseEntity.ok().body(this.despesaService.listAll());
+    }
+
+    @GetMapping("/{idDespesa}")
+    public ResponseEntity<Despesa> findById(
+            @PathVariable("idDespesa") Long idDespesa
+    ){
+        return ResponseEntity.ok().body(this.despesaService.findById(idDespesa));
+    }
+
+    @PutMapping("/{idDespesa}")
+    public ResponseEntity<?> update(
+            @PathVariable Long idDespesa,
+            @RequestBody Despesa despesa
     ){
         try{
-            this.despesaService.excluir(id, despesa);
-        }
-        catch (Exception e){
+            this.despesaService.update(idDespesa, despesa);
+            return ResponseEntity.ok().body("Despesa atualizada com sucesso!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro excluído com sucesso...");
     }
+
+    @PutMapping("/ativo/{idDespesa}")
+    public ResponseEntity<?> disable(
+            @PathVariable Long idDespesa,
+            @RequestBody Despesa despesa
+    ){
+        try{
+            this.despesaService.disable(idDespesa, despesa);
+            return ResponseEntity.ok().body("Despesa desativada com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/aprovador/{idAprovador}")
+    public ResponseEntity<?> findByAprovadorIsNull(@PathVariable("idAprovador") Long idAprovador) {
+        return ResponseEntity.ok().body(this.despesaService.findByAprovadorIsNull(idAprovador));
+    }
+
 }

@@ -1,53 +1,118 @@
 package br.com.uniamerica.transportadora.controller;
-import br.com.uniamerica.transportadora.Entity.*;
-import br.com.uniamerica.transportadora.repository.FreteRepository;
+
+import br.com.uniamerica.transportadora.Entity.Frete;
 import br.com.uniamerica.transportadora.service.FreteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping("/api/frete")
 public class FreteController {
 
-    @Autowired
-    private FreteRepository freteRepository;
     @Autowired
     private FreteService freteService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Produto produto, Cidade cidadeOrigem, Cidade cidadeDestino, Usuario motorista, Caminhao caminhao,
-                                       StatusFrete statusfrete, Integer quilometragemIni, Integer quilometragemFim, BigDecimal totalBrutoRecebidoNota, BigDecimal totalLiquidoRecebido,
-                                       BigDecimal pesoInicial, BigDecimal pesoFinal, BigDecimal pesoFinalTransportadora, BigDecimal precoTonelada, String observacao){
-        this.freteRepository.save(produto);
-        this.freteRepository.save(cidadeDestino);
-        this.freteRepository.save(cidadeOrigem);
-        this.freteRepository.save(motorista);
-        this.freteRepository.save(caminhao);
-        this.freteRepository.save(statusfrete);
-        this.freteRepository.save(quilometragemIni);
-        this.freteRepository.save(quilometragemFim);
-        this.freteRepository.save(totalBrutoRecebidoNota);
-        this.freteRepository.save(observacao);
-        this.freteRepository.save(totalLiquidoRecebido);
-        this.freteRepository.save(pesoFinal);
-        this.freteRepository.save(pesoFinalTransportadora);
-        this.freteRepository.save(pesoInicial);
-        this.freteRepository.save(precoTonelada);
-        return ResponseEntity.ok().body("Registro cadastrado com sucesso");
+    public ResponseEntity<?> save(
+            @RequestBody Frete frete
+    ){
+        try{
+            this.freteService.save(frete);
+            return ResponseEntity.ok().body("Frete cadastrado!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PostMapping("/SetCarga")
-    public ResponseEntity<?> setCarga
-            (@RequestBody final StatusFrete statusFrete
+    @GetMapping
+    public ResponseEntity<List<Frete>> listAll(
+
     ){
-        this.freteRepository.save(statusFrete);
-        return ResponseEntity.ok().body("Registro cadastrado com sucesso");
+        return ResponseEntity.ok().body(this.freteService.listAll());
     }
+
+    @GetMapping("/{idFrete}")
+    public ResponseEntity<Frete> findById(
+            @PathVariable("idFrete") Long idFrete
+    ){
+        return ResponseEntity.ok().body(this.freteService.findById(idFrete));
+    }
+
+    @PutMapping("/{idFrete}")
+    public ResponseEntity<?> update(
+            @PathVariable Long idFrete,
+            @RequestBody Frete frete
+    ){
+        try{
+            this.freteService.update(idFrete, frete);
+            return ResponseEntity.ok().body("Frete atualizado com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/status/carga-para-em-transporte/{idFrete}")
+    public ResponseEntity<?> atualizarStatusCargaParaEmTransporte(@PathVariable("idFrete") final Long idFrete) {
+        try {
+            this.freteService.atualizarStatusCargaParaEmTransporte(idFrete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("O frete iniciou seu transporte com sucesso!");
+    }
+
+    @PutMapping("/status/interrompido-para-em-transporte/{idFrete}")
+    public ResponseEntity<?> atualizarStatusInterrompidoParaEmTransporte(@PathVariable("idFrete") final Long idFrete) {
+        try {
+            this.freteService.atualizarStatusInterrompidoParaEmTransporte(idFrete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("O frete iniciou seu transporte com sucesso!");
+    }
+
+    @PutMapping("/status/em-transporte-para-interrompido/{idFrete}")
+    public ResponseEntity<?> atualizarStatusEmTransporteParaInterrompido(@PathVariable("idFrete") final Long idFrete) {
+        try {
+            this.freteService.atualizarStatusEmTransporteParaInterrompido(idFrete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("O frete foi interrompido!");
+    }
+
+    @PutMapping("/status/em-transporte-para-descarga/{idFrete}")
+    public ResponseEntity<?> atualizarStatusEmTransporteParaDescarga(@PathVariable("idFrete") final Long idFrete) {
+        try {
+            this.freteService.atualizarStatusEmTransporteParaDescarga(idFrete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("Frete em descarga!");
+    }
+
+    @PutMapping("/status/faturado/{idFrete}")
+    public ResponseEntity<?> atualizarStatusFaturado(@PathVariable("idFrete") final Long idFrete) {
+        try {
+            this.freteService.atualizarStatusFaturado(idFrete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("Frete faturado com sucesso!");
+    }
+
+    @PutMapping("/status/cancelado/{idFrete}")
+    public ResponseEntity<?> atualizarStatusCancelado(@PathVariable("idFrete") final Long idFrete) {
+        try {
+            this.freteService.atualizarStatusCancelado(idFrete);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("Frete cancelado com sucesso!");
+    }
+
 }

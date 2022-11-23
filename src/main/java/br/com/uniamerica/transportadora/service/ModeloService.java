@@ -4,25 +4,49 @@ import br.com.uniamerica.transportadora.repository.ModeloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 public class ModeloService {
 
     @Autowired
     private ModeloRepository modeloRepository;
 
-    public void atualizar(final Long id, final Modelo nome){
-        if(id.equals(nome.getId()) && !this.modeloRepository.findById(id).isEmpty()){
-            this.modeloRepository.save(nome);
-        } else{
-            throw new RuntimeException("Id não encontrado");
+    @Transactional
+    public Modelo save(Modelo modelo) {
+        return this.modeloRepository.save(modelo);
+    }
+
+    public List<Modelo> listAll() {
+        return this.modeloRepository.findAll();
+    }
+
+    public Modelo findById(Long id) {
+        return this.modeloRepository.findById(id).orElse(new Modelo());
+    }
+
+    @Transactional
+    public void update(Long id, Modelo modelo) {
+        if(id == modelo.getId()) {
+            this.modeloRepository.save(modelo);
+        } else {
+            throw new RuntimeException();
         }
     }
 
-    public void excluir(final Long id, final Modelo nome){
-        if (id.equals(nome.getId()) && !this.modeloRepository.findById(id).isEmpty()){
-            this.modeloRepository.delete(nome);
-        } else{
-            throw new RuntimeException("Id não encontrado");
+    @Transactional
+    public void disable(Long id, Modelo modelo){
+        if (id == modelo.getId()) {
+            this.modeloRepository.disable(modelo.getId());
+        }
+        else {
+            throw new RuntimeException();
         }
     }
+
+    public List<Modelo> findByMarca(Long id) {
+        return this.modeloRepository.findByMarca(id);
+    }
+
 }

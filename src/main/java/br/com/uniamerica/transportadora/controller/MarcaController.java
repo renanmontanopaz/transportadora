@@ -1,6 +1,6 @@
 package br.com.uniamerica.transportadora.controller;
+
 import br.com.uniamerica.transportadora.Entity.Marca;
-import br.com.uniamerica.transportadora.repository.MarcaRepository;
 import br.com.uniamerica.transportadora.service.MarcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,58 +10,62 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RequestMapping("/api/marca")
 public class MarcaController {
-
-    @Autowired
-    private MarcaRepository marcaRepository;
 
     @Autowired
     private MarcaService marcaService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll(){
-        return ResponseEntity.ok().body(this.marcaRepository.findByAtivoTrue());
-    }
-
-    @GetMapping("/filtro")
-    public ResponseEntity<List<Marca>> findAll(
-            @RequestParam("nome") final String nome
-    ){
-        return ResponseEntity.ok().body(this.marcaRepository.findByLikeNomeAndAtivoTrue(nome));
-    }
-
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Marca nome){
-        this.marcaRepository.save(nome);
-        return ResponseEntity.ok().body("Registro cadastrado com sucesso");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(
-            @PathVariable final Long id,
-            @RequestBody final Marca nome
+    public ResponseEntity<?> save(
+            @RequestBody Marca marca
     ){
         try{
-            this.marcaService.atualizar(id, nome);
-        }
-        catch (Exception e){
+            this.marcaService.save(marca);
+            return ResponseEntity.ok().body("Marca cadastrada!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro atualizado com sucesso...");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> excluir(
-            @PathVariable final Long id,
-            @RequestBody final Marca nome
+    @GetMapping
+    public ResponseEntity<List<Marca>> listAll(
+
+    ){
+        return ResponseEntity.ok().body(this.marcaService.listAll());
+    }
+
+    @GetMapping("/{idMarca}")
+    public ResponseEntity<Marca> findById(
+            @PathVariable("idMarca") Long idMarca
+    ){
+        return ResponseEntity.ok().body(this.marcaService.findById(idMarca));
+    }
+
+    @PutMapping("/{idMarca}")
+    public ResponseEntity<?> update(
+            @PathVariable Long idMarca,
+            @RequestBody Marca marca
     ){
         try{
-            this.marcaService.excluir(id, nome);
-        }
-        catch (Exception e){
+            this.marcaService.update(idMarca, marca);
+            return ResponseEntity.ok().body("Marca atualizada com sucesso!");
+        }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Registro excluído com sucesso...");
     }
+
+    @PutMapping("/ativo/{idMarca}")
+    public ResponseEntity<?> disable(
+            @PathVariable Long idMarca,
+            @RequestBody Marca marca
+    ){
+        try{
+            this.marcaService.disable(idMarca, marca);
+            return ResponseEntity.ok().body("Marca desativada com sucesso!");
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
