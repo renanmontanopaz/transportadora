@@ -32,4 +32,7 @@ public class Despesa extends AbstractEntity {
     @Getter @Setter
     @JoinColumn(name = "frete", nullable=false)
     private Frete frete;
+    @Getter @Setter
+    @Column(name = "aprovada", nullable = false)
+    private Boolean aprovada;
 }

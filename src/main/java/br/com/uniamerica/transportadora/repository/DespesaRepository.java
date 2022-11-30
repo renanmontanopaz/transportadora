@@ -8,32 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface DespesaRepository extends JpaRepository<Despesa, Long> {
-
-    @Query("SELECT des FROM Despesa des WHERE des.ativo = true")
-    List<Optional<Despesa>> findByAtivo();
-
-    @Query("SELECT d FROM Despesa d WHERE d.motorista = :motorista")
-    List<Optional<Despesa>>findByMotorista(Usuario motorista);
-
-    @Query("SELECT des FROM Despesa des WHERE des.frete.caminhao = :caminhao")
-    List<Optional<Despesa>>findByCaminhao(Caminhao caminhao);
-
-    @Query("SELECT d FROM Despesa d WHERE d.frete = :frete")
-    List<Optional<Despesa>>findByFrete(Frete frete);
-
-    @Query("SELECT d FROM Despesa d WHERE d.tipoDespesa = :tipoDespesa AND d.motorista = :motorista" +
-            " AND d.frete.caminhao = :caminhao")
-    List<Optional<Despesa>>findBySoma(TipoDespesa tipoDespesa, Usuario motorista, Caminhao caminhao);
-
-    @Query("SELECT d FROM Despesa d WHERE d.aprovador = :aprovador")
-    List<Optional<Despesa>>findByAprovador(Usuario aprovador);
-
-    @Query("SELECT d FROM Despesa d WHERE d.aprovada = false")
-    List<Optional<Despesa>>findByNaoAprovadas();
 
     @Query("SELECT d FROM Despesa d WHERE d.aprovador IS NULL AND d.id = :idAprovador")
     public List<Despesa> findByAprovadorIsNull(@Param("idAprovador") Long idAprovador);
@@ -45,5 +22,9 @@ public interface DespesaRepository extends JpaRepository<Despesa, Long> {
     @Query("FROM Despesa despesa WHERE despesa.frete.id = :idFrete AND despesa.ativo = true " +
             "AND despesa.aprovada = false")
     public List<Despesa> findByFreteAndAprovadorIsNull(@Param("idFrete") Long idFrete);
+
+    @Query(value = "select * from transportadora.tb_despesas" +
+            "where nome ilike '%' || :nome || '%' ", nativeQuery = true)
+    public List<Despesa> findByLikeNomeAndAtivoTrue(@Param("nome") final String nome);
 
 }
