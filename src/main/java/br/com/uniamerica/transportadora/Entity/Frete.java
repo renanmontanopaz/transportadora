@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -57,11 +58,11 @@ public class Frete extends AbstractEntity {
     private BigDecimal pesoFinalTransportado;
     @Getter @Setter
     @Column(name = "data_inicio", length = 25, nullable = false)
-    private LocalDateTime dataInicio;
+    private LocalDate dataInicio;
 
     @Getter @Setter
     @Column(name = "data_fim", length = 25, nullable = false)
-    private LocalDateTime dataFim;
+    private LocalDate dataFim;
     @Getter @Setter
     @Column(name= "preco_Tonelada", nullable = false, precision = 5, scale = 3)
     private BigDecimal precoTonelada;

@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Column;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
@@ -18,22 +18,22 @@ public abstract class AbstractEntity {
     private Long id;
     @Getter @Setter
     @Column(name = "Cadastrar", nullable = false)
-    private LocalDateTime cadastrar;
+    private LocalDate cadastrar;
     @Getter @Setter
     @Column(name = "Alterar", nullable = false)
-    private LocalDateTime alterar;
+    private LocalDate alterar;
     @Getter @Setter
     @Column(name = "ativo", nullable = false)
     private boolean ativo;
 
     @PrePersist
     public void dataCadastrar(){
-        this.setCadastrar(LocalDateTime.now());
+        this.setCadastrar(LocalDate.now());
         this.setAtivo(true);
     }
 
     @PreUpdate
     public void dataAlterar(){
-        this.setAlterar(LocalDateTime.now());
+        this.setAlterar(LocalDate.now());
     }
 }
