@@ -1,5 +1,6 @@
 package br.com.uniamerica.transportadora.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Column;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
@@ -18,22 +19,23 @@ public abstract class AbstractEntity {
     private Long id;
     @Getter @Setter
     @Column(name = "Cadastrar", nullable = false)
-    private LocalDate cadastrar;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime cadastrar;
     @Getter @Setter
     @Column(name = "Alterar", nullable = false)
-    private LocalDate alterar;
+    private LocalDateTime alterar;
     @Getter @Setter
     @Column(name = "ativo", nullable = false)
     private boolean ativo;
 
     @PrePersist
     public void dataCadastrar(){
-        this.setCadastrar(LocalDate.now());
+        this.setCadastrar(LocalDateTime.now());
         this.setAtivo(true);
     }
 
     @PreUpdate
     public void dataAlterar(){
-        this.setAlterar(LocalDate.now());
+        this.setAlterar(LocalDateTime.now());
     }
 }
