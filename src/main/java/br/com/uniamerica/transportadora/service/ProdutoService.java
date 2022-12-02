@@ -19,7 +19,7 @@ public class ProdutoService {
     }
 
     public List<Produto> listAll() {
-        return this.produtoRepository.findAll();
+        return this.produtoRepository.findByAtivoTrue();
     }
 
     public Produto findById(Long id) {
