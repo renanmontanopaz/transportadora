@@ -26,11 +26,8 @@ public class FreteService {
     private HistoricoFreteService historicoFreteService;
 
     public boolean checkCamposFreteIsNull(Frete frete) {
-        if (frete.getStatusFrete() == null || frete.getCaminhao() == null
-                || frete.getProduto() == null || frete.getMotorista() == null || frete.getCidadeOrigem() == null
-                || frete.getTotalBrutoRecebidoNota() == null || frete.getTotalLiquidoRecebido() == null
-                || frete.getPrecoTonelada() == null || frete.getPesoInicial() == null || frete.getPesoFinal() == null
-                || frete.getPesoFinalTransportado() == null) {
+        if (frete.getCaminhao() == null || frete.getProduto() == null || frete.getMotorista() == null || frete.getCidadeOrigem() == null
+                || frete.getCidadeDestino() == null || frete.getPrecoTonelada() == null) {
             return false;
         }else {
             return true;

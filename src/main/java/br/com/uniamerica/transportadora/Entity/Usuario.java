@@ -1,5 +1,6 @@
 package br.com.uniamerica.transportadora.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +38,7 @@ public class Usuario extends AbstractEntity{
     private String telefone;
     @Getter @Setter
     @Column(name = "Data_nascimento", length = 15, nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataNascimento;
     @Getter @Setter
     @Column(name = "Endereco", length = 255, nullable = false, unique = true)

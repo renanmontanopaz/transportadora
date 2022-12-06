@@ -5,6 +5,7 @@ import br.com.uniamerica.transportadora.Entity.Cidade;
 import br.com.uniamerica.transportadora.Entity.HistoricoFrete;
 import br.com.uniamerica.transportadora.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -48,6 +49,7 @@ public class CidadeService {
         }
     }
 
+    @Query("FROM Cidade cidade WHERE cidade.estado.id = :idEstado")
     public List<Cidade> findByEstado(Long id) {
         return this.cidadeRepository.findByEstado(id);
     }
