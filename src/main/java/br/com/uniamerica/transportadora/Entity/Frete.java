@@ -1,7 +1,8 @@
 package br.com.uniamerica.transportadora.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,29 +10,30 @@ import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity @Getter@Setter @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tb_fretes", schema = "transportadora")
 public class Frete extends AbstractEntity {
 
-    @ManyToOne(fetch= FetchType.EAGER, optional = false)
+    @ManyToOne
     @Getter
     @Setter
     @JoinColumn(name = "produto", nullable=false)
     private Produto produto;
-    @ManyToOne(fetch= FetchType.EAGER, optional = false)
+    @ManyToOne
     @Getter @Setter
     @JoinColumn(name = "cidadeOrigem", nullable=false)
     private Cidade cidadeOrigem;
-    @ManyToOne(fetch= FetchType.EAGER, optional = false)
+    @ManyToOne
     @Getter @Setter
     @JoinColumn(name = "cidadeDestino", nullable=false)
     private Cidade cidadeDestino;
-    @ManyToOne(fetch= FetchType.EAGER, optional = false)
+    @ManyToOne
     @Getter @Setter
     @JoinColumn(name = "motorista", nullable=false)
     private Usuario motorista;
     @Getter @Setter
-    @ManyToOne(fetch= FetchType.EAGER, optional = false)
+    @ManyToOne
     @JoinColumn(name = "caminhao", nullable=false)
     private Caminhao caminhao;
     @Getter @Setter
@@ -40,10 +42,10 @@ public class Frete extends AbstractEntity {
     private StatusFrete statusFrete;
     @Getter @Setter
     @Column(name = "QuilometragemIni", nullable = true)
-    private int quilometragemIni;
+    private BigDecimal quilometragemIni;
     @Getter @Setter
     @Column(name = "QuilometragemFim", nullable = true)
-    private int quilometragemFim;
+    private BigDecimal quilometragemFim;
     @Getter @Setter
     @Column(name= "total_Bruto_Recebido_Nota", nullable = true, precision = 5, scale = 3)
     private BigDecimal totalBrutoRecebidoNota;

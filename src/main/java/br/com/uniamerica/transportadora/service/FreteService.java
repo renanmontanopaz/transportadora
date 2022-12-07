@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.util.Assert;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Service
@@ -37,8 +38,9 @@ public class FreteService {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public Frete save(Frete frete) {
         Assert.isTrue(checkCamposFreteIsNull(frete), "Erro, algum campo do frete é nulo");
-        this.historicoFreteService.cadastrar(frete, StatusFrete.CARGA);
+        //this.historicoFreteService.cadastrar(frete, StatusFrete.CARGA);
         frete.setStatusFrete(StatusFrete.CARGA);
+        System.out.println(frete);
         return this.freteRepository.save(frete);
     }
 
